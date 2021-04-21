@@ -21,6 +21,16 @@ public class SystemAdmin implements Serializable {
     private String userName;
 
     /**
+     * 是否是管理员 0不是 1是
+     */
+    private int isSuper;
+
+    /**
+     * 绑定的人员id
+     */
+    private Long personId;
+
+    /**
      * 密码
      */
     private String password;

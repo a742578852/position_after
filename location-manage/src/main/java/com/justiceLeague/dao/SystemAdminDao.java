@@ -17,4 +17,11 @@ public interface SystemAdminDao {
     int updateByPrimaryKeySelective(SystemAdmin record);
 
     int updateByPrimaryKey(SystemAdmin record);
+
+    /**
+     * 根据用户名查询用户
+     * @param userName
+     * @return
+     */
+    SystemAdmin getAdminByUsername(String userName);
 }

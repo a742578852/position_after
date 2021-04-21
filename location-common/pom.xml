@@ -36,6 +36,14 @@
             <scope>provided</scope>
         </dependency>
 
+        <!--jwt相关-->
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>0.7.0</version>
+        </dependency>
+
+
     </dependencies>
 
 </project>
