@@ -8,11 +8,29 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * 系统人员,权限信息
+ */
 @RestController
-@RequestMapping("api/v1/system")
+@RequestMapping("api/system")
 public class SystemController {
     @Autowired
     SystemAdminService systemAdminService;
+
+    /**
+     * 用户登录
+     * @param loginName
+     * @param passWord
+     * @return
+     */
+    @GetMapping("golLogin")
+    public Result golLogin(String loginName,String passWord){
+
+
+
+        return null;
+    }
+
 
     /**
      * 根据id查询用户
@@ -24,6 +42,7 @@ public class SystemController {
 
         return new Result(200,true,"获取成功",systemAdminService.getAdminById(id));
     }
+
 
 
     /**

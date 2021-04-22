@@ -12,13 +12,12 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class CustomWebContigurer implements WebMvcConfigurer {
 
-    @Autowired
-    LoginIntercepter loginIntercepter;
+
 
     @Override
     public void addInterceptors(InterceptorRegistry registry){
 
-        registry.addInterceptor(loginIntercepter).addPathPatterns("/api/v1/*/**");
+
         //registry.addInterceptor(loginIntercepter).addPathPatterns("/api/us/login/getHomePage");
 
         WebMvcConfigurer.super.addInterceptors(registry);

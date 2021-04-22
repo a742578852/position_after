@@ -17,4 +17,12 @@ public interface SystemAdminService {
      * @return
      */
     Result addAccount(Long personId, String loginName, String passWord);
+
+    /**
+     * 登录
+     * @param loginName
+     * @param passWord
+     * @return
+     */
+    Result login(String loginName,String passWord);
 }
