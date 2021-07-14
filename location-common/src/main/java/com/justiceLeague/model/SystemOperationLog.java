@@ -13,9 +13,9 @@ public class SystemOperationLog implements Serializable {
     private Long id;
 
     /**
-     * 用户姓名
+     * 用户账户名
      */
-    private String name;
+    private String loginName;
 
     /**
      * 操作类型

@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.justiceLeague.dao.SystemPermissionDao">
+  <resultMap id="BaseResultMap" type="com.justiceLeague.model.SystemPermission">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="mode_id" jdbcType="BIGINT" property="modeId" />
+    <result column="parent_id" jdbcType="BIGINT" property="parentId" />
+    <result column="authority_name" jdbcType="VARCHAR" property="authorityName" />
+    <result column="authority" jdbcType="VARCHAR" property="authority" />
+    <result column="route_name" jdbcType="VARCHAR" property="routeName" />
+    <result column="icon" jdbcType="VARCHAR" property="icon" />
+    <result column="authority_type" jdbcType="TINYINT" property="authorityType" />
+    <result column="sort" jdbcType="INTEGER" property="sort" />
+    <result column="if_system" jdbcType="INTEGER" property="ifSystem" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="extended" jdbcType="INTEGER" property="extended" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, mode_id, parent_id, authority_name, authority, route_name, icon, authority_type, 
+    sort, if_system, `status`, extended, create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from system_permission
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from system_permission
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.justiceLeague.model.SystemPermission" useGeneratedKeys="true">
+    insert into system_permission (mode_id, parent_id, authority_name, 
+      authority, route_name, icon, 
+      authority_type, sort, if_system, 
+      `status`, extended, create_time, 
+      update_time)
+    values (#{modeId,jdbcType=BIGINT}, #{parentId,jdbcType=BIGINT}, #{authorityName,jdbcType=VARCHAR}, 
+      #{authority,jdbcType=VARCHAR}, #{routeName,jdbcType=VARCHAR}, #{icon,jdbcType=VARCHAR}, 
+      #{authorityType,jdbcType=TINYINT}, #{sort,jdbcType=INTEGER}, #{ifSystem,jdbcType=INTEGER}, 
+      #{status,jdbcType=INTEGER}, #{extended,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.justiceLeague.model.SystemPermission" useGeneratedKeys="true">
+    insert into system_permission
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="modeId != null">
+        mode_id,
+      </if>
+      <if test="parentId != null">
+        parent_id,
+      </if>
+      <if test="authorityName != null">
+        authority_name,
+      </if>
+      <if test="authority != null">
+        authority,
+      </if>
+      <if test="routeName != null">
+        route_name,
+      </if>
+      <if test="icon != null">
+        icon,
+      </if>
+      <if test="authorityType != null">
+        authority_type,
+      </if>
+      <if test="sort != null">
+        sort,
+      </if>
+      <if test="ifSystem != null">
+        if_system,
+      </if>
+      <if test="status != null">
+        `status`,
+      </if>
+      <if test="extended != null">
+        extended,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="modeId != null">
+        #{modeId,jdbcType=BIGINT},
+      </if>
+      <if test="parentId != null">
+        #{parentId,jdbcType=BIGINT},
+      </if>
+      <if test="authorityName != null">
+        #{authorityName,jdbcType=VARCHAR},
+      </if>
+      <if test="authority != null">
+        #{authority,jdbcType=VARCHAR},
+      </if>
+      <if test="routeName != null">
+        #{routeName,jdbcType=VARCHAR},
+      </if>
+      <if test="icon != null">
+        #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="authorityType != null">
+        #{authorityType,jdbcType=TINYINT},
+      </if>
+      <if test="sort != null">
+        #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="ifSystem != null">
+        #{ifSystem,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="extended != null">
+        #{extended,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.justiceLeague.model.SystemPermission">
+    update system_permission
+    <set>
+      <if test="modeId != null">
+        mode_id = #{modeId,jdbcType=BIGINT},
+      </if>
+      <if test="parentId != null">
+        parent_id = #{parentId,jdbcType=BIGINT},
+      </if>
+      <if test="authorityName != null">
+        authority_name = #{authorityName,jdbcType=VARCHAR},
+      </if>
+      <if test="authority != null">
+        authority = #{authority,jdbcType=VARCHAR},
+      </if>
+      <if test="routeName != null">
+        route_name = #{routeName,jdbcType=VARCHAR},
+      </if>
+      <if test="icon != null">
+        icon = #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="authorityType != null">
+        authority_type = #{authorityType,jdbcType=TINYINT},
+      </if>
+      <if test="sort != null">
+        sort = #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="ifSystem != null">
+        if_system = #{ifSystem,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        `status` = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="extended != null">
+        extended = #{extended,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.justiceLeague.model.SystemPermission">
+    update system_permission
+    set mode_id = #{modeId,jdbcType=BIGINT},
+      parent_id = #{parentId,jdbcType=BIGINT},
+      authority_name = #{authorityName,jdbcType=VARCHAR},
+      authority = #{authority,jdbcType=VARCHAR},
+      route_name = #{routeName,jdbcType=VARCHAR},
+      icon = #{icon,jdbcType=VARCHAR},
+      authority_type = #{authorityType,jdbcType=TINYINT},
+      sort = #{sort,jdbcType=INTEGER},
+      if_system = #{ifSystem,jdbcType=INTEGER},
+      `status` = #{status,jdbcType=INTEGER},
+      extended = #{extended,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

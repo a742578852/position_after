@@ -40,7 +40,7 @@ public class SystemController {
     @GetMapping("findById")
     public Result findById(long id){
 
-        return new Result(200,true,"获取成功",systemAdminService.getAdminById(id));
+        return new Result(200,true,"获取成功","12121");
     }
 
 
