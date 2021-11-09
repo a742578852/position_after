@@ -1,6 +1,7 @@
 package com.justiceLeague.mapper;
 
 import com.justiceLeague.model.EquipmentLabelCard;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
@@ -12,5 +13,5 @@ public interface EquipmentLabelCardMapper {
 
     //修改电量
     @Update("update equipment_labelCard set electric = #{ele} where mac = #{mac}")
-    int updateCardEle(String mac,int ele);
+    int updateCardEle(@Param("mac") String mac, @Param("ele") int ele);
 }

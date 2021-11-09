@@ -6,6 +6,8 @@ import com.justiceLeague.service.LocationLogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class LocationServiceImpl implements LocationLogService {
     @Autowired
@@ -14,5 +16,10 @@ public class LocationServiceImpl implements LocationLogService {
     @Override
     public int addLocationLog(LocationLog locationLog) {
         return locationLogMapper.insertLocationLog(locationLog);
+    }
+
+    @Override
+    public List<LocationLog> getLocationByFive() {
+        return locationLogMapper.getLocationByFive();
     }
 }

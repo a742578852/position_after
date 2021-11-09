@@ -16,10 +16,13 @@ import io.netty.util.CharsetUtil;
 import io.netty.util.concurrent.GlobalEventExecutor;
 import org.apache.commons.codec.binary.Hex;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.util.*;
 
 @ChannelHandler.Sharable
+@Component
 public class ServerHandler extends ChannelInboundHandlerAdapter {
     @Autowired
     EquipmentGateWayService equipmentGateWayService;
@@ -33,6 +36,15 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
     UserService userService;
     @Autowired
     LocationLogService locationLogService;
+
+    /**
+     * 解决无法自动注入问题
+     */
+    private static ServerHandler serverHandler;
+    @PostConstruct
+    public void init() {
+        serverHandler = this;
+    }
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
@@ -102,12 +114,13 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
                     //读取有效数据
                     String effectiveData = dataMsg.substring(22, (effctiveDataNumber * 2) + 23);
 
+                    String labelCard = effectiveData.substring(0, 12);
                     //查询出定位卡的详细信息
-                    equipmentLabelCard = equipmentLabelCardService.getLabekCard(effectiveData.substring(0, 13));
+                    equipmentLabelCard = serverHandler.equipmentLabelCardService.getLabekCard(labelCard);
 
                     //修改定位卡电量
-                    int ele = Integer.parseInt(effectiveData.substring(13, 15));
-                    equipmentLabelCardService.updateEle(effectiveData.substring(0, 13), ele);
+                    Integer ele = Integer.parseInt(effectiveData.substring(12, 14), 16);
+                    serverHandler.equipmentLabelCardService.updateEle(effectiveData.substring(0, 12), ele);
 
                     //没有信标
                     if (effctiveDataNumber == 7) {
@@ -122,7 +135,7 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
                         int rssi1 = Integer.parseInt(effectiveData.substring(29, 31), 16);
                         //待优化
                         //查询当前信标的详细信息
-                        EquipmentBeacon equipmentBeacon1 = equipmentBeaconService.getBeacon(mac1);
+                        EquipmentBeacon equipmentBeacon1 = serverHandler.equipmentBeaconService.getBeacon(mac1);
                         equipmentBeacon1.setElectric(ele1);
                         equipmentBeacon1.setRssi(rssi1);
                         beaconList.add(equipmentBeacon1);
@@ -138,7 +151,7 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
                         int rssi1 = Integer.parseInt(effectiveData.substring(29, 31), 16);
                         //待优化
                         //查询当前信标的详细信息
-                        EquipmentBeacon equipmentBeacon1 = equipmentBeaconService.getBeacon(mac1);
+                        EquipmentBeacon equipmentBeacon1 = serverHandler.equipmentBeaconService.getBeacon(mac1);
                         equipmentBeacon1.setElectric(ele1);
                         equipmentBeacon1.setRssi(rssi1);
 
@@ -149,53 +162,51 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
                         double ele2 = Integer.parseInt(effectiveData.substring(43, 45), 16);
                         //获取第二个信号强度
                         int rssi2 = Integer.parseInt(effectiveData.substring(45, 47), 16);
-                        EquipmentBeacon equipmentBeacon2 = equipmentBeaconService.getBeacon(mac2);
+                        EquipmentBeacon equipmentBeacon2 = serverHandler.equipmentBeaconService.getBeacon(mac2);
                         equipmentBeacon2.setElectric(ele2);
                         equipmentBeacon2.setRssi(rssi2);
                         beaconList.add(equipmentBeacon1);
                         beaconList.add(equipmentBeacon2);
 
-
                         //三个信标
                     } else if (effctiveDataNumber == 31) {
 
                         //获取第一个mac
-                        String mac1 = effectiveData.substring(15, 27);
+                        String mac1 = effectiveData.substring(14, 26);
                         //获取第一个信标电量
-                        double ele1 = Integer.parseInt(effectiveData.substring(27, 29), 16);
+                        double ele1 = Integer.parseInt(effectiveData.substring(26, 28), 16);
                         //获取第一个信标rssi
-                        int rssi1 = Integer.parseInt(effectiveData.substring(29, 31), 16);
+                        int rssi1 = Integer.parseInt(effectiveData.substring(28, 30), 16);
                         //待优化
                         //查询当前信标的详细信息
-                        EquipmentBeacon equipmentBeacon1 = equipmentBeaconService.getBeacon(mac1);
+                        EquipmentBeacon equipmentBeacon1 = serverHandler.equipmentBeaconService.getBeacon(mac1);
                         equipmentBeacon1.setElectric(ele1);
                         equipmentBeacon1.setRssi(rssi1);
 
                         //获取第二个信标
                         //获取第二个mac
-                        String mac2 = effectiveData.substring(31, 43);
+                        String mac2 = effectiveData.substring(30, 42);
                         //获取第二个电量
-                        double ele2 = Integer.parseInt(effectiveData.substring(43, 45), 16);
+                        double ele2 = Integer.parseInt(effectiveData.substring(42, 44), 16);
                         //获取第二个信号强度
-                        int rssi2 = Integer.parseInt(effectiveData.substring(45, 47), 16);
-                        EquipmentBeacon equipmentBeacon2 = equipmentBeaconService.getBeacon(mac2);
+                        int rssi2 = Integer.parseInt(effectiveData.substring(44, 46), 16);
+                        EquipmentBeacon equipmentBeacon2 = serverHandler.equipmentBeaconService.getBeacon(mac2);
                         equipmentBeacon2.setElectric(ele2);
                         equipmentBeacon2.setRssi(rssi2);
 
                         //获取第三个信标
-                        String mac3 = effectiveData.substring(47, 59);
+                        String mac3 = effectiveData.substring(46, 58);
                         //获取第三个电量
-                        double ele3 = Double.parseDouble(effectiveData.substring(59, 61));
+                        double ele3 = Double.parseDouble(effectiveData.substring(58, 60));
                         //获取第三个信号强度
-                        int rssi3 = Integer.parseInt(effectiveData.substring(61, 63), 16);
-                        EquipmentBeacon equipmentBeacon3 = equipmentBeaconService.getBeacon(mac3);
+                        int rssi3 = Integer.parseInt(effectiveData.substring(60, 62), 16);
+                        EquipmentBeacon equipmentBeacon3 = serverHandler.equipmentBeaconService.getBeacon(mac3);
                         equipmentBeacon3.setElectric(ele3);
                         equipmentBeacon3.setRssi(rssi3);
 
                         beaconList.add(equipmentBeacon1);
                         beaconList.add(equipmentBeacon2);
                         beaconList.add(equipmentBeacon3);
-
 
                     }
 
@@ -205,14 +216,13 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
                     locationLog.setY((Double) locationMap.get("y"));
                     locationLog.setFloor((Integer) locationMap.get("floor"));
                     //根据定位卡mac查询人员详情
-                    User user = userService.getUser(equipmentLabelCard.getMac());
+                    User user = serverHandler.userService.getUser(equipmentLabelCard.getMac());
                     locationLog.setUserId(user.getId());
                     locationLog.setUserName(user.getName());
                     locationLog.setMac(equipmentLabelCard.getMac());
                     locationLog.setCreateTime(new Date());
                     //持久化
-                    locationLogService.addLocationLog(locationLog);
-
+                    serverHandler.locationLogService.addLocationLog(locationLog);
                     break;
 
                 //网关上电
@@ -221,7 +231,7 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
                     type = 3;
                     typeInfo = "网关上电";
                     //修改数据库基站状态 写一个定时查询网关是否在线
-                    equipmentGateWayService.updateOnline(DicConfig.ONLINE, gatewayMac);
+                    serverHandler.equipmentGateWayService.updateOnline(DicConfig.ONLINE, gatewayMac);
                     break;
 
                 //人员求救报警
@@ -253,7 +263,7 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
             gateWayReportRecord.setType(type);
             gateWayReportRecord.setTypeInfo(typeInfo);
             //将数据保存
-            gatewayReportRecordService.insertReportRecord(gateWayReportRecord);
+            serverHandler.gatewayReportRecordService.insertReportRecord(gateWayReportRecord);
         } else {
             System.out.println("数据错误");
         }

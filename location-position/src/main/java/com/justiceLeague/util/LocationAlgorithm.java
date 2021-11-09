@@ -94,12 +94,12 @@ public class LocationAlgorithm {
             double rssi2 = GetCoordinate.getDistanceByRiss(beacon2.getRssi());
             double rssi3 = GetCoordinate.getDistanceByRiss(beacon3.getRssi());
 
-            Round round1 = new Round(beacon1.getX(),beacon1.getY(),rssi1);
-            Round round2 = new Round(beacon2.getX(),beacon2.getY(),rssi2);
-            Round round3 = new Round(beacon3.getX(),beacon3.getY(),rssi3);
-            Coordinate coordinate = GetCoordinate.triCentroid(round1,round2,round3);
-            locationMap.put("x", coordinate.getX());
-            locationMap.put("y", coordinate.getY());
+            Round round1 = new Round(beacon1.getX(),beacon1.getY(),rssi1*100);
+            Round round2 = new Round(beacon2.getX(),beacon2.getY(),rssi2*100);
+            Round round3 = new Round(beacon3.getX(),beacon3.getY(),rssi3*100);
+            Round round = GetCoordinate.triCentroid(round1,round2,round3);
+            locationMap.put("x", round.getX());
+            locationMap.put("y", round.getY());
             locationMap.put("floor", beMin.getFloor());
 
         }
